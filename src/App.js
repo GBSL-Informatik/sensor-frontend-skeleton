@@ -23,19 +23,22 @@ export default class App extends React.Component {
   componentDidMount() {
     this.socket = socketioClient(API_URL);
 
-    // TODO 1: teile dem Server mit, dass ein neues Gerät bereit zur Datenübertragung ist
-    //          ("new_device")
+    // TODO 0: API_URL auf Zeile 24 durch die URL des Servers ersetzen.
 
-    // TODO 2: konfiguriere was passiert, wenn wir vom Server die Nachricht "motion_devices"
-    //         bekommen. Die erhaltenen Daten sollen der Funktion "this.setMotionDevices" übergeben
-    //         werden.
+    // TODO 1: teile dem Server mit, dass ein neues Gerät bereit zur Datenübertragung ist:
+    //         Nachricht: "new_device", Daten: { deviceId: this.deviceId }
 
+    // TODO 2: konfiguriere was passiert, wenn vom Server die Nachricht "motion_devices" empfangen wird
+    //         --> Die erhaltenen Daten (data) sollen der Funktion "this.setMotionDevices" übergeben:
+    //         this.setMotionDevice(data)
 
-    // TODO 3: beantrage alle Devices ("get_devices") vom Server
+    // TODO 3: beantrage alle Devices vom Server:
+    //         Nachricht: "get_devices"  
 
     // TODO 4: konfiguriere, was passiert, wenn vom Server die Nachricht "motion_data"
-    //         empfangen wird. => die erhaltenen motionDaten in unseren State schreiben
-    //         (this.setState() verwenden)
+    //         empfangen wird. => die erhaltenen motionDaten müssen in unseren State geschrieben werden,
+    //         damit der Graph die Änderung mitbekommt und sich updaten kann: 
+    //         this.setState({ motionData: motionData })
 
     /**
      * register a function that is called whenever the window emits a
@@ -61,7 +64,8 @@ export default class App extends React.Component {
       y: e.accelerationIncludingGravity.y,
       z: e.accelerationIncludingGravity.z
     };
-    // TODO: send the new motionData to the server
+    // TODO 5: sende die neuen Bewegungsdaten an den Server:
+    //         Nachricht: "new_motion_data", Daten: motionData
   };
 
   /**
@@ -96,17 +100,18 @@ export default class App extends React.Component {
 
   setDisplayDevice = (deviceId) => {
     // TODO: informiere den Server, dass wir nun die deviceMotion Daten
-    //       von der "deviceId" beobachten möchten (daher über alle Änderungen
-    //       informiert werden)
+    //       von der "deviceId" beobachten möchten:
+    //       Nachricht: "display_device", Daten: { oldDeviceId: this.state.displayDeviceId, deviceId: deviceId}
 
 
-    // save the displayDeviceId locally to be shown in the dropdown
+    // save the displayDeviceId locally such that it is shown in the dropdown
     this.setState({ displayDeviceId: deviceId });
   }
 
   clearMotionData = () => {
-    // TODO: sage dem Server, er soll die Bewegungsdaten Daten des Devices mit der Id
-    //       displayDeviceId löschen
+    // TODO: sage dem Server, er soll die Bewegungsdaten Daten des aktuellen
+    //       displayDevices löschen:
+    //       Nachricht: "clear_motion_data", Daten: { deviceId: this.state.displayDeviceId }
   }
 
   render() {
